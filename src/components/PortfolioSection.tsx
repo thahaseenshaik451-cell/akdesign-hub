@@ -3,48 +3,56 @@ import { useRef, useState } from "react";
 import { ExternalLink, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+// Import portfolio images
+import coffeeBrand from "@/assets/portfolio/coffee-brand.jpg";
+import techBrand from "@/assets/portfolio/tech-brand.jpg";
+import gardenBrand from "@/assets/portfolio/garden-brand.jpg";
+import fitnessBrand from "@/assets/portfolio/fitness-brand.jpg";
+import consultingBrand from "@/assets/portfolio/consulting-brand.jpg";
+import bakeryBrand from "@/assets/portfolio/bakery-brand.jpg";
+
 const projects = [
   {
     id: 1,
     title: "Luxe Coffee Roasters",
     category: "Brand Identity",
     description: "Complete brand identity for an artisan coffee company",
-    color: "from-amber-500/20 to-orange-600/20",
+    image: coffeeBrand,
   },
   {
     id: 2,
     title: "TechFlow AI",
     category: "Logo Design",
     description: "Modern tech startup logo and visual identity",
-    color: "from-blue-500/20 to-cyan-500/20",
+    image: techBrand,
   },
   {
     id: 3,
     title: "Evergreen Gardens",
     category: "Visual Branding",
     description: "Organic landscaping company branding",
-    color: "from-green-500/20 to-emerald-500/20",
+    image: gardenBrand,
   },
   {
     id: 4,
     title: "Nova Fitness",
     category: "Brand Identity",
     description: "Dynamic fitness brand with bold aesthetics",
-    color: "from-red-500/20 to-pink-500/20",
+    image: fitnessBrand,
   },
   {
     id: 5,
     title: "Apex Consulting",
     category: "Logo Design",
     description: "Professional consulting firm rebrand",
-    color: "from-slate-500/20 to-gray-500/20",
+    image: consultingBrand,
   },
   {
     id: 6,
     title: "Artisan Bakery Co.",
     category: "Packaging Design",
     description: "Rustic bakery brand and packaging system",
-    color: "from-yellow-500/20 to-amber-500/20",
+    image: bakeryBrand,
   },
 ];
 
@@ -125,30 +133,17 @@ const PortfolioSection = () => {
               className="group relative cursor-pointer"
             >
               <div className="aspect-[4/3] rounded-2xl overflow-hidden relative">
-                {/* Gradient Background */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${project.color}`} />
-                
-                {/* Animated pattern */}
-                <div 
-                  className="absolute inset-0 opacity-30"
-                  style={{
-                    backgroundImage: `radial-gradient(circle at 50% 50%, hsl(var(--primary) / 0.3) 1px, transparent 1px)`,
-                    backgroundSize: '20px 20px'
-                  }}
+                {/* Project Image */}
+                <motion.img
+                  src={project.image}
+                  alt={project.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  animate={hoveredId === project.id ? { scale: 1.1 } : { scale: 1 }}
+                  transition={{ duration: 0.5 }}
                 />
 
-                {/* Logo/Visual placeholder */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <motion.div
-                    animate={hoveredId === project.id ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
-                    transition={{ duration: 0.4 }}
-                    className="w-24 h-24 rounded-2xl bg-card/80 backdrop-blur-sm border border-border/50 flex items-center justify-center shadow-xl"
-                  >
-                    <span className="font-display font-bold text-2xl gradient-text">
-                      {project.title.split(' ').map(w => w[0]).join('')}
-                    </span>
-                  </motion.div>
-                </div>
+                {/* Dark overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
 
                 {/* Overlay on hover */}
                 <motion.div
@@ -171,6 +166,13 @@ const PortfolioSection = () => {
                     </div>
                   </div>
                 </motion.div>
+
+                {/* Gradient border on hover */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: hoveredId === project.id ? 1 : 0 }}
+                  className="absolute inset-0 rounded-2xl border-2 border-primary/50 pointer-events-none"
+                />
               </div>
 
               {/* Project info below */}
