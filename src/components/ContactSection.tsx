@@ -26,9 +26,8 @@ const contactInfo = [
 ];
 
 const socials = [
-  { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: Linkedin, href: "#", label: "LinkedIn" },
-  { icon: Twitter, href: "#", label: "Twitter" },
+  { icon: Instagram, href: "https://www.instagram.com/ak._graphic_hub_?igsh=MTJudzA3cjAwZGlybg==", label: "Instagram" },
+  { icon: Linkedin, href: "https://www.linkedin.com/feed/", label: "LinkedIn" },
 ];
 
 const ContactSection = () => {
