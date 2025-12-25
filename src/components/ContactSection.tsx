@@ -10,8 +10,8 @@ const contactInfo = [
   {
     icon: Mail,
     label: "Email",
-    value: "hello@creativestudio.com",
-    href: "mailto:hello@creativestudio.com",
+    value: "akgraphicdesign2007@gmail.com",
+    href: "mailto:akgraphicdesign2007@gmail.com",
   },
   {
     icon: MapPin,
