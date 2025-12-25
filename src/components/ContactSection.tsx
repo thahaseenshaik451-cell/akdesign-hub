@@ -212,7 +212,7 @@ const ContactSection = () => {
 
       {/* Floating WhatsApp Button */}
       <motion.a
-        href="https://wa.me/1234567890"
+        href="https://wa.me/918019532783"
         target="_blank"
         rel="noopener noreferrer"
         initial={{ scale: 0 }}
