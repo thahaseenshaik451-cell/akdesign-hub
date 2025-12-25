@@ -16,7 +16,7 @@ const contactInfo = [
   {
     icon: MapPin,
     label: "Location",
-    value: "New York, USA",
+    value: "Andhra Pradesh, India",
   },
   {
     icon: Clock,
