@@ -1,72 +1,53 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
-import { ExternalLink, Eye } from "lucide-react";
+import { useRef, useState, useMemo } from "react";
+import { ExternalLink, Eye, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { usePortfolio } from "@/hooks/usePortfolio";
 
-// Import portfolio images
-import coffeeBrand from "@/assets/portfolio/coffee-brand.jpg";
-import techBrand from "@/assets/portfolio/tech-brand.jpg";
-import gardenBrand from "@/assets/portfolio/garden-brand.jpg";
-import fitnessBrand from "@/assets/portfolio/fitness-brand.jpg";
-import consultingBrand from "@/assets/portfolio/consulting-brand.jpg";
-import bakeryBrand from "@/assets/portfolio/bakery-brand.jpg";
+// Helper function to format category for display
+const formatCategory = (category: string | null): string => {
+  if (!category) return "Uncategorized";
+  return category
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
 
-const projects = [
-  {
-    id: 1,
-    title: "Luxe Coffee Roasters",
-    category: "Brand Identity",
-    description: "Complete brand identity for an artisan coffee company",
-    image: coffeeBrand,
-  },
-  {
-    id: 2,
-    title: "TechFlow AI",
-    category: "Logo Design",
-    description: "Modern tech startup logo and visual identity",
-    image: techBrand,
-  },
-  {
-    id: 3,
-    title: "Evergreen Gardens",
-    category: "Visual Branding",
-    description: "Organic landscaping company branding",
-    image: gardenBrand,
-  },
-  {
-    id: 4,
-    title: "Nova Fitness",
-    category: "Brand Identity",
-    description: "Dynamic fitness brand with bold aesthetics",
-    image: fitnessBrand,
-  },
-  {
-    id: 5,
-    title: "Apex Consulting",
-    category: "Logo Design",
-    description: "Professional consulting firm rebrand",
-    image: consultingBrand,
-  },
-  {
-    id: 6,
-    title: "Artisan Bakery Co.",
-    category: "Packaging Design",
-    description: "Rustic bakery brand and packaging system",
-    image: bakeryBrand,
-  },
-];
-
-const categories = ["All", "Logo Design", "Brand Identity", "Visual Branding", "Packaging Design"];
+// Helper function to map category to display category
+const mapToDisplayCategory = (category: string | null): string => {
+  const categoryMap: Record<string, string> = {
+    'branding': 'Brand Identity',
+    'web-design': 'Web Design',
+    'print': 'Print Design',
+    'illustration': 'Illustration',
+    'packaging': 'Packaging Design',
+    'social-media': 'Social Media',
+  };
+  return categoryMap[category || ''] || formatCategory(category);
+};
 
 const PortfolioSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [activeCategory, setActiveCategory] = useState("All");
-  const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const { items: projects, loading } = usePortfolio();
 
-  const filteredProjects = activeCategory === "All" 
-    ? projects 
-    : projects.filter(p => p.category === activeCategory);
+  // Get unique categories from projects
+  const categories = useMemo(() => {
+    const cats = new Set<string>(["All"]);
+    projects.forEach(project => {
+      if (project.category) {
+        cats.add(mapToDisplayCategory(project.category));
+      }
+    });
+    return Array.from(cats);
+  }, [projects]);
+
+  const filteredProjects = useMemo(() => {
+    if (activeCategory === "All") return projects;
+    return projects.filter(p => mapToDisplayCategory(p.category) === activeCategory);
+  }, [projects, activeCategory]);
 
   return (
     <section id="portfolio" className="py-24 md:py-32 relative overflow-hidden">
@@ -116,40 +97,49 @@ const PortfolioSection = () => {
         </motion.div>
 
         {/* Projects Grid */}
-        <motion.div 
-          layout
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
-        >
-          {filteredProjects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              layout
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 30 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              onMouseEnter={() => setHoveredId(project.id)}
-              onMouseLeave={() => setHoveredId(null)}
-              className="group relative cursor-pointer"
-            >
-              <motion.div 
-                className="aspect-[4/3] rounded-2xl overflow-hidden relative"
-                whileHover={{ 
-                  boxShadow: "0 20px 40px -15px hsl(var(--primary) / 0.3)",
-                  y: -5
-                }}
-                transition={{ duration: 0.4 }}
+        {loading ? (
+          <div className="flex items-center justify-center py-24">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          </div>
+        ) : filteredProjects.length === 0 ? (
+          <div className="text-center py-24">
+            <p className="text-muted-foreground">No portfolio items to display yet.</p>
+          </div>
+        ) : (
+          <motion.div 
+            layout
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+          >
+            {filteredProjects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                layout
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 30 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                onMouseEnter={() => setHoveredId(project.id)}
+                onMouseLeave={() => setHoveredId(null)}
+                className="group relative cursor-pointer"
               >
-                {/* Project Image - Fade + Slide Up animation */}
-                <motion.img
-                  src={project.image}
-                  alt={project.title}
-                  className="absolute inset-0 w-full h-full object-cover"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  whileHover={{ scale: 1.08 }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
-                />
+                <motion.div 
+                  className="aspect-[4/3] rounded-2xl overflow-hidden relative"
+                  whileHover={{ 
+                    boxShadow: "0 20px 40px -15px hsl(var(--primary) / 0.3)",
+                    y: -5
+                  }}
+                  transition={{ duration: 0.4 }}
+                >
+                  {/* Project Image - Fade + Slide Up animation */}
+                  <motion.img
+                    src={project.image_url}
+                    alt={project.title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    whileHover={{ scale: 1.08 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                  />
 
                 {/* Dark overlay gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
@@ -170,11 +160,13 @@ const PortfolioSection = () => {
                     animate={{ y: hoveredId === project.id ? 0 : 10 }}
                     transition={{ duration: 0.4, delay: 0.1 }}
                   >
-                    <span className="text-primary text-sm font-medium">{project.category}</span>
+                    <span className="text-primary text-sm font-medium">{mapToDisplayCategory(project.category)}</span>
                     <h3 className="font-display font-bold text-xl text-foreground mt-2 mb-3">
                       {project.title}
                     </h3>
-                    <p className="text-muted-foreground text-sm mb-4">{project.description}</p>
+                    {project.description && (
+                      <p className="text-muted-foreground text-sm mb-4">{project.description}</p>
+                    )}
                     <div className="flex items-center justify-center gap-3">
                       <Button variant="hero" size="sm">
                         <Eye className="w-4 h-4 mr-2" />
@@ -196,7 +188,7 @@ const PortfolioSection = () => {
               {/* Project info below */}
               <div className="mt-4">
                 <span className="text-primary text-xs font-medium uppercase tracking-wider">
-                  {project.category}
+                  {mapToDisplayCategory(project.category)}
                 </span>
                 <h3 className="font-display font-semibold text-lg text-foreground mt-1 group-hover:text-primary transition-colors">
                   {project.title}
@@ -205,6 +197,7 @@ const PortfolioSection = () => {
             </motion.div>
           ))}
         </motion.div>
+        )}
 
         {/* View All Button */}
         <motion.div

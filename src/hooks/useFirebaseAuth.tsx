@@ -1,5 +1,3 @@
-// Firebase Auth Integration
-// This hook now uses Firebase Authentication instead of Supabase
 import { useState, useEffect, createContext, useContext } from 'react';
 import { 
   User as FirebaseUser,
@@ -14,7 +12,6 @@ import { auth, db } from '@/integrations/firebase/client';
 
 interface AuthContextType {
   user: FirebaseUser | null;
-  session: FirebaseUser | null; // For compatibility, using user as session
   isAdmin: boolean;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
@@ -24,7 +21,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+export const FirebaseAuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -89,10 +86,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return { error: null };
     } catch (error: any) {
       console.error('Sign in error:', error);
-      const errorMessage = error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password'
-        ? new Error('Invalid email or password. Please try again.')
-        : error;
-      return { error: errorMessage as Error };
+      return { error: error as Error };
     }
   };
 
@@ -112,10 +106,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return { error: null };
     } catch (error: any) {
       console.error('Sign up error:', error);
-      const errorMessage = error.code === 'auth/email-already-in-use'
-        ? new Error('This email is already registered. Please login instead.')
-        : error;
-      return { error: errorMessage as Error };
+      return { error: error as Error };
     }
   };
 
@@ -131,16 +122,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session: user, isAdmin, loading, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ user, isAdmin, loading, signIn, signUp, signOut }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => {
+export const useFirebaseAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error('useFirebaseAuth must be used within a FirebaseAuthProvider');
   }
   return context;
 };
+

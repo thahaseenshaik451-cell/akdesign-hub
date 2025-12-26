@@ -84,7 +84,9 @@ export const useBubbleEffect = () => {
 
   const handleMouseEnter = useCallback((e: MouseEvent) => {
     const target = e.target as HTMLElement;
-    if (target.matches(INTERACTIVE_SELECTORS) || target.closest(INTERACTIVE_SELECTORS)) {
+    if (target && typeof target.matches === 'function' && target.matches(INTERACTIVE_SELECTORS)) {
+      createBubble(e.clientX, e.clientY);
+    } else if (target && target.closest && target.closest(INTERACTIVE_SELECTORS)) {
       createBubble(e.clientX, e.clientY);
     }
   }, [createBubble]);

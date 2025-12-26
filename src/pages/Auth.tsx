@@ -191,6 +191,20 @@ const Auth = () => {
                   ? "Don't have an account? Sign up" 
                   : 'Already have an account? Sign in'}
               </Button>
+
+              <div className="text-center pt-4 border-t border-border/50">
+                <p className="text-xs text-muted-foreground mb-2">
+                  First time setting up?
+                </p>
+                <Button
+                  type="button"
+                  variant="link"
+                  onClick={() => navigate('/setup')}
+                  className="text-xs text-primary hover:underline"
+                >
+                  Create Admin Account
+                </Button>
+              </div>
             </CardFooter>
           </form>
         </Card>
