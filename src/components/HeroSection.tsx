@@ -86,34 +86,43 @@ const HeroSection = () => {
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8"
         >
           <Sparkles className="w-4 h-4 text-primary" />
-          <span className="text-sm font-medium text-primary">Premium Design Studio</span>
+          <span className="text-sm font-medium text-primary">Designs that speak creativity</span>
         </motion.div>
 
         <motion.h1
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
           className="font-display font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight mb-6 text-balance"
         >
-          Crafting Bold
+          Creative Graphic &
           <br />
-          <span className="gradient-text">Visual Identities</span>
+          <span className="gradient-text">Logo Designs</span>
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 text-balance"
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-4 text-balance"
         >
-          Transforming ideas into iconic logos and stunning brand designs 
-          that captivate audiences and elevate businesses to new heights.
+          Modern visuals crafted with precision and creativity
+        </motion.p>
+
+        <motion.p
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          className="text-base md:text-lg text-muted-foreground/80 max-w-xl mx-auto mb-10 text-balance"
+        >
+          Explore professional graphic and logo designs enhanced with smooth 
+          image animations for a premium visual experience.
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
+          transition={{ duration: 0.5, delay: 0.7 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <Button
@@ -121,14 +130,14 @@ const HeroSection = () => {
             size="xl"
             onClick={() => scrollToSection("#portfolio")}
           >
-            View My Work
+            View Designs
           </Button>
           <Button
             variant="heroOutline"
             size="xl"
             onClick={() => scrollToSection("#contact")}
           >
-            Start a Project
+            Explore Projects
           </Button>
         </motion.div>
 
@@ -136,7 +145,7 @@ const HeroSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1 }}
+          transition={{ duration: 0.5, delay: 0.9 }}
           className="mt-16 md:mt-24 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-12 max-w-3xl mx-auto"
         >
           {[
@@ -147,9 +156,9 @@ const HeroSection = () => {
           ].map((stat, index) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, scale: 0.8 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 1.2 + index * 0.1 }}
+              transition={{ duration: 0.4, delay: 1 + index * 0.1 }}
               className="text-center"
             >
               <div className="font-display font-bold text-3xl md:text-4xl gradient-text mb-1">
