@@ -124,35 +124,52 @@ const PortfolioSection = () => {
             <motion.div
               key={project.id}
               layout
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 30 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
               onMouseEnter={() => setHoveredId(project.id)}
               onMouseLeave={() => setHoveredId(null)}
               className="group relative cursor-pointer"
             >
-              <div className="aspect-[4/3] rounded-2xl overflow-hidden relative">
-                {/* Project Image */}
+              <motion.div 
+                className="aspect-[4/3] rounded-2xl overflow-hidden relative"
+                whileHover={{ 
+                  boxShadow: "0 20px 40px -15px hsl(var(--primary) / 0.3)",
+                  y: -5
+                }}
+                transition={{ duration: 0.4 }}
+              >
+                {/* Project Image - Fade + Slide Up animation */}
                 <motion.img
                   src={project.image}
                   alt={project.title}
                   className="absolute inset-0 w-full h-full object-cover"
-                  animate={hoveredId === project.id ? { scale: 1.1 } : { scale: 1 }}
-                  transition={{ duration: 0.5 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  whileHover={{ scale: 1.08 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
                 />
 
                 {/* Dark overlay gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
 
-                {/* Overlay on hover */}
+                {/* Overlay on hover with scale-in effect */}
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: hoveredId === project.id ? 1 : 0 }}
-                  transition={{ duration: 0.3 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ 
+                    opacity: hoveredId === project.id ? 1 : 0,
+                    scale: hoveredId === project.id ? 1 : 0.95
+                  }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
                   className="absolute inset-0 bg-background/90 backdrop-blur-sm flex items-center justify-center"
                 >
-                  <div className="text-center p-6">
+                  <motion.div 
+                    className="text-center p-6"
+                    initial={{ y: 10 }}
+                    animate={{ y: hoveredId === project.id ? 0 : 10 }}
+                    transition={{ duration: 0.4, delay: 0.1 }}
+                  >
                     <span className="text-primary text-sm font-medium">{project.category}</span>
                     <h3 className="font-display font-bold text-xl text-foreground mt-2 mb-3">
                       {project.title}
@@ -164,16 +181,17 @@ const PortfolioSection = () => {
                         View Project
                       </Button>
                     </div>
-                  </div>
+                  </motion.div>
                 </motion.div>
 
                 {/* Gradient border on hover */}
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: hoveredId === project.id ? 1 : 0 }}
+                  transition={{ duration: 0.4 }}
                   className="absolute inset-0 rounded-2xl border-2 border-primary/50 pointer-events-none"
                 />
-              </div>
+              </motion.div>
 
               {/* Project info below */}
               <div className="mt-4">

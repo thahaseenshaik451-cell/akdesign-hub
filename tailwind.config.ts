@@ -13,48 +13,34 @@ export default {
   		}
   	},
   	extend: {
-  		fontFamily: {
-  			display: [
-  				'Outfit',
-  				'sans-serif'
-  			],
-  			body: [
-  				'Inter',
-  				'sans-serif'
-  			],
-  			sans: [
-  				'Roboto',
-  				'ui-sans-serif',
-  				'system-ui',
-  				'-apple-system',
-  				'BlinkMacSystemFont',
-  				'Segoe UI',
-  				'Helvetica Neue',
-  				'Arial',
-  				'Noto Sans',
-  				'sans-serif'
-  			],
-  			serif: [
-  				'Libre Caslon Text',
-  				'ui-serif',
-  				'Georgia',
-  				'Cambria',
-  				'Times New Roman',
-  				'Times',
-  				'serif'
-  			],
-  			mono: [
-  				'Roboto Mono',
-  				'ui-monospace',
-  				'SFMono-Regular',
-  				'Menlo',
-  				'Monaco',
-  				'Consolas',
-  				'Liberation Mono',
-  				'Courier New',
-  				'monospace'
-  			]
-  		},
+		fontFamily: {
+			display: [
+				'Poppins',
+				'sans-serif'
+			],
+			body: [
+				'Inter',
+				'sans-serif'
+			],
+			serif: [
+				'Playfair Display',
+				'ui-serif',
+				'Georgia',
+				'serif'
+			],
+			sans: [
+				'Inter',
+				'ui-sans-serif',
+				'system-ui',
+				'-apple-system',
+				'BlinkMacSystemFont',
+				'Segoe UI',
+				'Helvetica Neue',
+				'Arial',
+				'Noto Sans',
+				'sans-serif'
+			]
+		},
   		colors: {
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
